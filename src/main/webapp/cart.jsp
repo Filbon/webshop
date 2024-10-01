@@ -2,6 +2,8 @@
 <%@ page import="com.example.webshop.model.Cart" %>
 <%@ page import="com.example.webshop.model.CartItem" %>
 <%@ page import="com.example.webshop.model.Product" %>
+<%@ include file="header.jsp" %>
+
 
 <%
     Cart cart = (Cart) request.getSession().getAttribute("cart");
@@ -16,6 +18,7 @@
         <th>Quantity</th>
         <th>Price</th>
         <th>Total</th>
+        <th>Action</th> <!-- Add a new column for actions -->
     </tr>
     <%
         double total = 0.0;
@@ -28,6 +31,13 @@
         <td><%= item.getQuantity() %></td>
         <td>$<%= item.getProduct().getPrice() %></td>
         <td>$<%= itemTotal %></td>
+        <td>
+            <!-- Form to remove item from cart -->
+            <form action="RemoveFromCartServlet" method="post">
+                <input type="hidden" name="productId" value="<%= item.getProduct().getId() %>">
+                <input type="submit" value="Remove">
+            </form>
+        </td>
     </tr>
     <%
         }
@@ -41,4 +51,5 @@
 <%
     }
 %>
+
 

@@ -1,7 +1,6 @@
-<%@ page import="java.util.List" %>
 <%@ page import="com.example.webshop.model.Product" %>
-<%@ page import="java.io.IOException" %>
-<%@ page import="javax.servlet.ServletException" %>
+<%@ page import="java.util.List" %>
+<%@ include file="header.jsp" %>
 
 <%
     List<Product> products = (List<Product>) request.getAttribute("products");
@@ -15,9 +14,8 @@
     <li>
         <strong><%= product.getName() %></strong> - $<%= product.getPrice() %>
         <form action="AddToCartServlet" method="post">
-            <%--@declare id="quantity"--%><input type="hidden" name="productId" value="<%= product.getId() %>" />
-            <label for="quantity">Quantity:</label>
-            <input type="number" name="quantity" min="1" value="1" required />
+            <input type="hidden" name="productId" value="<%= product.getId() %>" />
+            <input type="number" name="quantity" value="1" min="1" />
             <button type="submit">Add to Cart</button>
         </form>
     </li>
@@ -32,4 +30,5 @@
 <%
     }
 %>
+
 

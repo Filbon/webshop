@@ -1,5 +1,6 @@
 package com.example.webshop.servlet;
 
+import com.example.webshop.model.Cart;
 import com.example.webshop.model.CartItem;
 
 import javax.servlet.ServletException;
@@ -15,15 +16,17 @@ import java.util.List;
 public class RemoveFromCartServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int productId = Integer.parseInt(request.getParameter("productId"));
-
         HttpSession session = request.getSession();
-        List<CartItem> cartItems = (List<CartItem>) session.getAttribute("cartItems");
+        Cart cart = (Cart) session.getAttribute("cart");
 
-        if (cartItems != null) {
-            cartItems.removeIf(item -> item.getProduct().getId() == productId);
-            session.setAttribute("cartItems", cartItems);
+        if (cart != null) {
+            // Use the new method to remove the item from the cart
+            cart.removeItem(productId);
+            session.setAttribute("cart", cart);
         }
 
-        response.sendRedirect("cart");
+        response.sendRedirect("cart.jsp"); // Redirect back to cart page
     }
 }
+
+

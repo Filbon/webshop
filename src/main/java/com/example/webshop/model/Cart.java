@@ -21,6 +21,9 @@ public class Cart {
         }
         items.add(cartItem); // Add new item if not already in cart
     }
+    public void removeItem(int productId) {
+        items.removeIf(item -> item.getProduct().getId() == productId);
+    }
 
     // Get all items in the cart
     public List<CartItem> getItems() {

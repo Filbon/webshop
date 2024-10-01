@@ -71,4 +71,3 @@ public class CartServlet extends HttpServlet {
         response.sendRedirect("cart");
     }
 }
-
