@@ -1,14 +1,35 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
-<html>
-<head>
-    <title>Produkter</title>
-</head>
-<body>
-<h1>Produkter</h1>
+<%@ page import="java.util.List" %>
+<%@ page import="com.example.webshop.model.Product" %>
+<%@ page import="java.io.IOException" %>
+<%@ page import="javax.servlet.ServletException" %>
+
+<%
+    List<Product> products = (List<Product>) request.getAttribute("products");
+    if (products != null && !products.isEmpty()) {
+%>
+<h1>Product List</h1>
 <ul>
-    <c:forEach var="product" items="${products}">
-        <li>${product.name} - ${product.price} <a href="cart?action=add&id=${product.id}">Lägg i kundvagn</a></li>
-    </c:forEach>
+    <%
+        for (Product product : products) {
+    %>
+    <li>
+        <strong><%= product.getName() %></strong> - $<%= product.getPrice() %>
+        <form action="AddToCartServlet" method="post">
+            <%--@declare id="quantity"--%><input type="hidden" name="productId" value="<%= product.getId() %>" />
+            <label for="quantity">Quantity:</label>
+            <input type="number" name="quantity" min="1" value="1" required />
+            <button type="submit">Add to Cart</button>
+        </form>
+    </li>
+    <%
+        }
+    %>
 </ul>
-</body>
-</html>
+<%
+} else {
+%>
+<p>No products available.</p>
+<%
+    }
+%>
+
