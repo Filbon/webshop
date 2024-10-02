@@ -1,6 +1,8 @@
 package com.example.webshop.servlet;
 
+import com.example.webshop.dao.UserCartDAO;
 import com.example.webshop.dao.UserDAO;
+import com.example.webshop.model.Cart;
 import com.example.webshop.model.User;
 
 import javax.servlet.ServletException;
@@ -21,10 +23,15 @@ public class LoginServlet extends HttpServlet {
         User user = userDAO.authenticateUser(username, password);
 
         if (user != null) {
-            // Store user in session
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
-            response.sendRedirect("products"); // Redirect to the products page after successful login
+
+            // Load the user's cart from the database
+            UserCartDAO userCartDAO = new UserCartDAO();
+            Cart cart = userCartDAO.loadUserCart(user.getId());
+            session.setAttribute("cart", cart); // Store the cart in session
+
+            response.sendRedirect("products");
         } else {
             response.sendRedirect("login.jsp?error=Invalid credentials");
         }

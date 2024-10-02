@@ -1,7 +1,9 @@
 package com.example.webshop.servlet;
 
+import com.example.webshop.dao.UserCartDAO;
 import com.example.webshop.model.Cart;
 import com.example.webshop.model.CartItem;
+import com.example.webshop.model.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,15 +20,20 @@ public class RemoveFromCartServlet extends HttpServlet {
         int productId = Integer.parseInt(request.getParameter("productId"));
         HttpSession session = request.getSession();
         Cart cart = (Cart) session.getAttribute("cart");
+        User user = (User) session.getAttribute("user");
 
-        if (cart != null) {
-            // Use the new method to remove the item from the cart
+        if (cart != null && user != null) {
             cart.removeItem(productId);
             session.setAttribute("cart", cart);
+
+            // Remove the item from the database
+            UserCartDAO userCartDAO = new UserCartDAO();
+            userCartDAO.removeCartItem(user.getId(), productId);
         }
 
-        response.sendRedirect("cart.jsp"); // Redirect back to cart page
+        response.sendRedirect("cart.jsp");
     }
 }
+
 
 

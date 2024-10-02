@@ -41,4 +41,3 @@ public class Cart {
 
     // Additional methods (e.g., removeItem, clearCart) can be added here
 }
-
