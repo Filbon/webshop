@@ -16,7 +16,7 @@ public class UserCartDAO {
     public UserCartDAO() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/webshop", "root", "1ReallyD01");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/webshop", "root", "1234");
         } catch (Exception e) {
             e.printStackTrace();
         }
