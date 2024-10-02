@@ -23,7 +23,6 @@ public class CartServlet extends HttpServlet {
         productDAO = new ProductDAO();
     }
 
-    // View cart
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         List<CartItem> cartItems = (List<CartItem>) session.getAttribute("cartItems");
@@ -37,7 +36,6 @@ public class CartServlet extends HttpServlet {
         request.getRequestDispatcher("cart.jsp").forward(request, response);
     }
 
-    // Add to cart
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int productId = Integer.parseInt(request.getParameter("productId"));
         int quantity = Integer.parseInt(request.getParameter("quantity"));
@@ -50,7 +48,6 @@ public class CartServlet extends HttpServlet {
             session.setAttribute("cartItems", cartItems);
         }
 
-        // Check if the product is already in the cart
         boolean productExists = false;
         for (CartItem item : cartItems) {
             if (item.getProduct().getId() == productId) {
@@ -60,7 +57,6 @@ public class CartServlet extends HttpServlet {
             }
         }
 
-        // If the product is not in the cart, add a new CartItem
         if (!productExists) {
             Product product = productDAO.getProductById(productId);
             if (product != null) {

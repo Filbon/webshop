@@ -41,32 +41,13 @@ public class UserCartDAO {
 
                 Product product = new Product(productId, name, price);
                 CartItem cartItem = new CartItem(product, quantity);
-                cart.addItem(cartItem);  // Add CartItem to Cart
+                cart.addItem(cartItem);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return cart; // Return the Cart object with items
-    }
-
-    public void saveCartItems(int userId, Cart cart) {
-        String query = "INSERT INTO user_cart (user_id, product_id, quantity) " +
-                "VALUES (?, ?, ?) " +
-                "ON DUPLICATE KEY UPDATE quantity = ?"; // Update quantity if the product already exists
-
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            for (CartItem item : cart.getItems()) {
-                stmt.setInt(1, userId);
-                stmt.setInt(2, item.getProduct().getId());
-                stmt.setInt(3, item.getQuantity());
-                stmt.setInt(4, item.getQuantity());
-                stmt.addBatch();  // Add to batch for multiple insertions
-            }
-            stmt.executeBatch();  // Execute all batched inserts at once
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        return cart;
     }
 
 
@@ -82,16 +63,6 @@ public class UserCartDAO {
         }
     }
 
-    public void clearUserCart(int userId) {
-        String query = "DELETE FROM user_cart WHERE user_id = ?";
-
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, userId);
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
     public void addOrUpdateCartItem(int userId, int productId, int quantity) {
         String query = "INSERT INTO user_cart (user_id, product_id, quantity) " +
                 "VALUES (?, ?, ?) " +
@@ -101,7 +72,7 @@ public class UserCartDAO {
             stmt.setInt(1, userId);
             stmt.setInt(2, productId);
             stmt.setInt(3, quantity);
-            stmt.setInt(4, quantity);  // Update the quantity if product already exists
+            stmt.setInt(4, quantity);
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

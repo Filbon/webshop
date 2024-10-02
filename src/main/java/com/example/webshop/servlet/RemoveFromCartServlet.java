@@ -26,7 +26,6 @@ public class RemoveFromCartServlet extends HttpServlet {
             cart.removeItem(productId);
             session.setAttribute("cart", cart);
 
-            // Remove the item from the database
             UserCartDAO userCartDAO = new UserCartDAO();
             userCartDAO.removeCartItem(user.getId(), productId);
         }

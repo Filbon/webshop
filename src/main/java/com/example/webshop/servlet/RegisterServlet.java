@@ -16,11 +16,11 @@ public class RegisterServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        User user = new User(0, username, password); // ID will be auto-generated
+        User user = new User(0, username, password);
         UserDAO userDAO = new UserDAO();
 
         if (userDAO.registerUser(user)) {
-            response.sendRedirect("login.jsp"); // Redirect to login page after successful registration
+            response.sendRedirect("login.jsp");
         } else {
             response.sendRedirect("registration.jsp?error=Registration Failed");
         }

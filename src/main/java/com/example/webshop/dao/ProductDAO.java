@@ -21,13 +21,11 @@ public class ProductDAO {
     public List<Product> getAllProducts() {
         List<Product> products = new ArrayList<>();
         try {
-            // Corrected query to select all columns
             String query = "SELECT * FROM products";
             PreparedStatement ps = connection.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                // Ensure the column names match your database schema
                 products.add(new Product(rs.getInt("id"), rs.getString("name"), rs.getBigDecimal("price")));
             }
         } catch (SQLException e) {

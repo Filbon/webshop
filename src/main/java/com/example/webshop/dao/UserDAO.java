@@ -24,7 +24,7 @@ public class UserDAO {
             String query = "INSERT INTO users (username, password) VALUES (?, ?)";
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setString(1, user.getUsername());
-            ps.setString(2, user.getPassword()); // Make sure to hash the password in a real application
+            ps.setString(2, user.getPassword());
             int rowsInserted = ps.executeUpdate();
             return rowsInserted > 0;
         } catch (Exception e) {
@@ -38,7 +38,7 @@ public class UserDAO {
             String query = "SELECT * FROM users WHERE username = ? AND password = ?";
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setString(1, username);
-            ps.setString(2, password); // Verify password properly in a real application
+            ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
@@ -47,6 +47,6 @@ public class UserDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null; // Return null if authentication fails
+        return null;
     }
 }

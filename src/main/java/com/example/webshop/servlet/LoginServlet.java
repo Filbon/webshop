@@ -26,10 +26,9 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
 
-            // Load the user's cart from the database
             UserCartDAO userCartDAO = new UserCartDAO();
             Cart cart = userCartDAO.loadUserCart(user.getId());
-            session.setAttribute("cart", cart); // Store the cart in session
+            session.setAttribute("cart", cart);
 
             response.sendRedirect("products");
         } else {

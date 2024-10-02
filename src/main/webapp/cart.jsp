@@ -18,7 +18,7 @@
         <th>Quantity</th>
         <th>Price</th>
         <th>Total</th>
-        <th>Action</th> <!-- Add a new column for actions -->
+        <th>Action</th>
     </tr>
     <%
         double total = 0.0;
@@ -32,7 +32,6 @@
         <td>$<%= item.getProduct().getPrice() %></td>
         <td>$<%= itemTotal %></td>
         <td>
-            <!-- Form to remove item from cart -->
             <form action="RemoveFromCartServlet" method="post">
                 <input type="hidden" name="productId" value="<%= item.getProduct().getId() %>">
                 <input type="submit" value="Remove">

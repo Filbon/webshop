@@ -1,6 +1,6 @@
 <%@ page import="javax.servlet.http.HttpSession" %>
 <%
     HttpSession currentSession = request.getSession();
-    currentSession.invalidate(); // Clear session but keep cart in the database
+    currentSession.invalidate();
     response.sendRedirect("login.jsp");
 %>

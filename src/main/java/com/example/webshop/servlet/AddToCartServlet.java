@@ -22,32 +22,32 @@ public class AddToCartServlet extends HttpServlet {
         int quantity = Integer.parseInt(request.getParameter("quantity"));
 
         HttpSession session = request.getSession();
-        Cart cart = (Cart) session.getAttribute("cart");
+        Cart sessionCart = (Cart) session.getAttribute("cart");
         User user = (User) session.getAttribute("user");
-
-        if (user == null) {
-            // Redirect to login if the user is not logged in
-            response.sendRedirect("login.jsp");
-            return;
-        }
 
         ProductDAO productDAO = new ProductDAO();
         Product product = productDAO.getProductById(productId);
 
+        // Check if the product exists
         if (product != null) {
-            // Add item to the cart (in session)
-            if (cart == null) {
-                cart = new Cart();
-                session.setAttribute("cart", cart);
+            // If session cart doesn't exist, create one
+            if (sessionCart == null) {
+                sessionCart = new Cart();
+                session.setAttribute("cart", sessionCart);
             }
-            cart.addItem(new CartItem(product, quantity));
+            // Add item to session cart
+            sessionCart.addItem(new CartItem(product, quantity));
 
-            // Persist the cart item in the database
-            UserCartDAO userCartDAO = new UserCartDAO();
-            userCartDAO.addOrUpdateCartItem(user.getId(), productId, quantity);
+            // If user is logged in, also persist the cart item
+            if (user != null) {
+                UserCartDAO userCartDAO = new UserCartDAO();
+                userCartDAO.addOrUpdateCartItem(user.getId(), productId, quantity);
+            }
         }
 
+        // Redirect to cart page
         response.sendRedirect("cart.jsp");
     }
 }
+
 
