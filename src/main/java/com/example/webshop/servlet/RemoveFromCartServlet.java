@@ -18,14 +18,17 @@ import java.util.List;
 public class RemoveFromCartServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int productId = Integer.parseInt(request.getParameter("productId"));
+
         HttpSession session = request.getSession();
         Cart cart = (Cart) session.getAttribute("cart");
         User user = (User) session.getAttribute("user");
 
-        if (cart != null && user != null) {
+        if (cart != null) {
             cart.removeItem(productId);
             session.setAttribute("cart", cart);
+        }
 
+        if (user != null) {
             UserCartDAO userCartDAO = new UserCartDAO();
             userCartDAO.removeCartItem(user.getId(), productId);
         }
@@ -33,6 +36,7 @@ public class RemoveFromCartServlet extends HttpServlet {
         response.sendRedirect("cart.jsp");
     }
 }
+
 
 
 
