@@ -36,34 +36,4 @@ public class CartServlet extends HttpServlet {
         request.getRequestDispatcher("cart.jsp").forward(request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int productId = Integer.parseInt(request.getParameter("productId"));
-        int quantity = Integer.parseInt(request.getParameter("quantity"));
-
-        HttpSession session = request.getSession();
-        List<CartItem> cartItems = (List<CartItem>) session.getAttribute("cartItems");
-
-        if (cartItems == null) {
-            cartItems = new ArrayList<>();
-            session.setAttribute("cartItems", cartItems);
-        }
-
-        boolean productExists = false;
-        for (CartItem item : cartItems) {
-            if (item.getProduct().getId() == productId) {
-                item.setQuantity(item.getQuantity() + quantity);
-                productExists = true;
-                break;
-            }
-        }
-
-        if (!productExists) {
-            Product product = productDAO.getProductById(productId);
-            if (product != null) {
-                cartItems.add(new CartItem(product, quantity));
-            }
-        }
-
-        response.sendRedirect("cart");
-    }
 }
