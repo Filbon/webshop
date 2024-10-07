@@ -1,6 +1,8 @@
 package com.example.webshop.servlet;
 
 import com.example.webshop.dao.UserDAO;
+import com.example.webshop.dto.UserDTO;
+import com.example.webshop.handler.UserHandler;
 import com.example.webshop.model.User;
 
 import javax.servlet.ServletException;
@@ -16,10 +18,10 @@ public class RegisterServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        User user = new User(0, username, password);
-        UserDAO userDAO = new UserDAO();
+        UserHandler userHandler = new UserHandler();
+        UserDTO registeredUser = userHandler.registerUser(new UserDTO(0, username, password));
 
-        if (userDAO.registerUser(user)) {
+        if (registeredUser != null) {
             response.sendRedirect("login.jsp");
         } else {
             response.sendRedirect("registration.jsp?error=Registration Failed");

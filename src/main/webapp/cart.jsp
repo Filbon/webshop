@@ -1,13 +1,12 @@
 <%@ page import="java.util.List" %>
-<%@ page import="com.example.webshop.model.Cart" %>
-<%@ page import="com.example.webshop.model.CartItem" %>
-<%@ page import="com.example.webshop.model.Product" %>
+<%@ page import="com.example.webshop.dto.CartDTO" %>
+<%@ page import="com.example.webshop.dto.CartItemDTO" %>
+<%@ page import="com.example.webshop.dto.ProductDTO" %>
 <%@ include file="header.jsp" %>
 
-
 <%
-    Cart cart = (Cart) request.getSession().getAttribute("cart");
-    List<CartItem> cartItems = cart != null ? cart.getItems() : null;
+    CartDTO cart = (CartDTO) request.getSession().getAttribute("cart");
+    List<CartItemDTO> cartItems = cart != null ? cart.getItems() : null;
 
     if (cartItems != null && !cartItems.isEmpty()) {
 %>
@@ -22,7 +21,7 @@
     </tr>
     <%
         double total = 0.0;
-        for (CartItem item : cartItems) {
+        for (CartItemDTO item : cartItems) {
             double itemTotal = item.getProduct().getPrice().doubleValue() * item.getQuantity();
             total += itemTotal;
     %>

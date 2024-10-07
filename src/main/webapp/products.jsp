@@ -1,15 +1,17 @@
-<%@ page import="com.example.webshop.model.Product" %>
+<%@ page import="com.example.webshop.dto.ProductDTO" %>
 <%@ page import="java.util.List" %>
 <%@ include file="header.jsp" %>
 
 <%
-    List<Product> products = (List<Product>) request.getAttribute("products");
+    // Retrieve the list of products as ProductDTOs
+    List<ProductDTO> products = (List<ProductDTO>) request.getAttribute("products");
     if (products != null && !products.isEmpty()) {
 %>
 <h1>Product List</h1>
 <ul>
     <%
-        for (Product product : products) {
+        // Iterate through the ProductDTOs
+        for (ProductDTO product : products) {
     %>
     <li>
         <strong><%= product.getName() %></strong> - $<%= product.getPrice() %>

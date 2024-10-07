@@ -2,6 +2,10 @@ package com.example.webshop.servlet;
 
 import com.example.webshop.dao.UserCartDAO;
 import com.example.webshop.dao.UserDAO;
+import com.example.webshop.dto.CartDTO;
+import com.example.webshop.dto.UserDTO;
+import com.example.webshop.handler.UserCartHandler;
+import com.example.webshop.handler.UserHandler;
 import com.example.webshop.model.Cart;
 import com.example.webshop.model.User;
 
@@ -19,16 +23,16 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        UserDAO userDAO = new UserDAO();
-        User user = userDAO.authenticateUser(username, password);
+        UserHandler userHandler = new UserHandler();
+        UserDTO userDTO = userHandler.authenticateUser(username, password);
 
-        if (user != null) {
+        if (userDTO != null) {
             HttpSession session = request.getSession();
-            session.setAttribute("user", user);
+            session.setAttribute("user", userDTO);
 
-            UserCartDAO userCartDAO = new UserCartDAO();
-            Cart cart = userCartDAO.loadUserCart(user.getId());
-            session.setAttribute("cart", cart);
+            UserCartHandler cartHandler = new UserCartHandler();
+            CartDTO cartDTO = cartHandler.loadUserCart(userDTO.getId());
+            session.setAttribute("cart", cartDTO);
 
             response.sendRedirect("products");
         } else {
@@ -36,3 +40,4 @@ public class LoginServlet extends HttpServlet {
         }
     }
 }
+

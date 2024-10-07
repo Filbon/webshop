@@ -1,9 +1,13 @@
 package com.example.webshop.servlet;
 
 import com.example.webshop.dao.ProductDAO;
-import com.example.webshop.dao.UserCartDAO;
-import com.example.webshop.model.Cart;
-import com.example.webshop.model.CartItem;
+import com.example.webshop.dto.CartDTO;
+import com.example.webshop.dto.CartItemDTO;
+import com.example.webshop.dto.ProductDTO;
+import com.example.webshop.dto.UserDTO;
+import com.example.webshop.handler.ProductHandler;
+import com.example.webshop.handler.UserCartHandler;
+import com.example.webshop.handler.UserHandler;
 import com.example.webshop.model.Product;
 import com.example.webshop.model.User;
 
@@ -17,37 +21,46 @@ import java.io.IOException;
 
 @WebServlet("/AddToCartServlet")
 public class AddToCartServlet extends HttpServlet {
+    private ProductHandler productHandler;
+    private UserHandler userHandler;
+
+    @Override
+    public void init() {
+        productHandler = new ProductHandler();
+        userHandler = new UserHandler();
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int productId = Integer.parseInt(request.getParameter("productId"));
         int quantity = Integer.parseInt(request.getParameter("quantity"));
 
         HttpSession session = request.getSession();
-        Cart sessionCart = (Cart) session.getAttribute("cart");
-        User user = (User) session.getAttribute("user");
+        CartDTO sessionCart = (CartDTO) session.getAttribute("cart");
+        UserDTO userDTO = (UserDTO) session.getAttribute("user");
 
-        ProductDAO productDAO = new ProductDAO();
-        Product product = productDAO.getProductById(productId);
+        ProductDTO productDTO = productHandler.getProductById(productId);
 
-        // Check if the product exists
-        if (product != null) {
-            // If session cart doesn't exist, create one
+
+        if (productDTO != null) {
             if (sessionCart == null) {
-                sessionCart = new Cart();
+                sessionCart = new CartDTO();
                 session.setAttribute("cart", sessionCart);
             }
-            // Add item to session cart
-            sessionCart.addItem(new CartItem(product, quantity));
 
-            // If user is logged in, also persist the cart item
-            if (user != null) {
-                UserCartDAO userCartDAO = new UserCartDAO();
-                userCartDAO.addOrUpdateCartItem(user.getId(), productId, quantity);
+            sessionCart.addItem(new CartItemDTO(productDTO, quantity));
+
+            if (userDTO != null) {
+                userHandler.addOrUpdateCartItem(userDTO.getId(), productId, quantity);
             }
         }
 
-        // Redirect to cart page
         response.sendRedirect("cart.jsp");
     }
 }
+
+
+
+
+
 
 

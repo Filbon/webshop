@@ -1,8 +1,8 @@
-<%@ page import="com.example.webshop.model.User" %>
+<%@ page import="com.example.webshop.dto.UserDTO" %>
 <!-- header.jsp -->
 <div class="header">
     <%
-        User user = (User) session.getAttribute("user");
+        UserDTO user = (UserDTO) session.getAttribute("user");
         if (user != null) {
     %>
     <p>Welcome, <%= user.getUsername() %>! <a href="logout.jsp">Logout</a></p>
